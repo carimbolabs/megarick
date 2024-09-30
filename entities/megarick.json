@@ -1,0 +1,19 @@
+{
+  "spritesheet": "blobs/spritesheet.png",
+  "animations": {
+    "idle": {
+      "frames": [
+        {
+          "x": 32,
+          "y": 0,
+          "width": 27,
+          "height": 63,
+          "duration": 100
+        }
+      ]
+    },
+    "walk": {},
+    "jump": {},
+    "attack": {}
+  }
+}
