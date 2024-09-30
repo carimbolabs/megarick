@@ -11,8 +11,11 @@ engine:prefetch({
 
 local sm = engine:soundmanager()
 
-sm:play("blobs/fx.ogg")
-sleep(1000)
+sm:play("blobs/fx.ogg", true)
+
+-- sm:stop("blobs/fx.ogg")
+sleep(3000)
+--
 sm:play("blobs/sample.ogg")
 
 -- local mr = engine:spawn("megarick")
