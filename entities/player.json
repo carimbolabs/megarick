@@ -1,0 +1,91 @@
+{
+  "spritesheet": "blobs/player.png",
+  "animations": {
+    "idle": {
+      "frames": [
+        {
+          "x": 1,
+          "y": 25,
+          "width": 20,
+          "height": 24,
+          "duration": 100
+        },
+        {
+          "x": 23,
+          "y": 25,
+          "width": 19,
+          "height": 24,
+          "duration": 100
+        },
+        {
+          "x": 54,
+          "y": 1,
+          "width": 20,
+          "height": 23,
+          "duration": 100
+        },
+        {
+          "x": 76,
+          "y": 1,
+          "width": 19,
+          "height": 23,
+          "duration": 100
+        }
+      ]
+    },
+    "walk": {
+      "frames": [
+        {
+          "x": 1,
+          "y": 1,
+          "width": 23,
+          "height": 22,
+          "duration": 100
+        },
+        {
+          "x": 26,
+          "y": 1,
+          "width": 26,
+          "height": 22,
+          "duration": 100
+        },
+        {
+          "x": 44,
+          "y": 26,
+          "width": 17,
+          "height": 24,
+          "duration": 100
+        }
+      ]
+    },
+    "jump": {
+      "frames": [
+        {
+          "x": 95,
+          "y": 27,
+          "width": 27,
+          "height": 30,
+          "duration": 100
+        }
+      ]
+    },
+    "attack": {
+      "frames": [
+        {
+          "x": 97,
+          "y": 1,
+          "width": 27,
+          "height": 24,
+          "duration": 100
+        },
+        {
+          "x": 63,
+          "y": 26,
+          "width": 30,
+          "height": 30,
+          "duration": 100
+        }
+      ]
+    }
+  }
+}

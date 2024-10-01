@@ -6,19 +6,11 @@ local engine = EngineFactory.new()
     :create()
 
 engine:prefetch({
-  "blobs/fx.ogg",
+  "blobs/spritesheet.png",
 })
 
-local sm = engine:soundmanager()
 
-sm:play("blobs/fx.ogg", true)
-
--- sm:stop("blobs/fx.ogg")
-sleep(3000)
---
-sm:play("blobs/sample.ogg")
-
--- local mr = engine:spawn("megarick")
+local player = engine:spawn("player")
 
 -- mr:on_update(function(self)
 --   print("bump")
