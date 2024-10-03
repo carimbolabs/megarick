@@ -9,6 +9,9 @@ engine:prefetch({
   "blobs/player.png",
 })
 
+local octopus = engine:spawn("octopus")
+octopus:set_action("idle")
+octopus:set_placement(720, 410)
 
 local player = engine:spawn("player")
 player:set_action("idle")
@@ -37,7 +40,7 @@ player:on_update(function(self)
   end
 
   if engine:is_keydown(KeyEvent.space) then
-    velocity.y = -.8
+    velocity.y = -2
   end
 
   if velocity:moving() then
