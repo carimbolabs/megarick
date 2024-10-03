@@ -11,7 +11,7 @@ engine:prefetch({
 
 
 local player = engine:spawn("player")
-player:set_action("run")
+player:set_action("idle")
 player:set_placement(0, 580)
 
 local function loop(delta)
@@ -37,7 +37,18 @@ player:on_update(function(self)
   end
 
   if engine:is_keydown(KeyEvent.space) then
-    velocity.y = -3
+    velocity.y = -.8
+  end
+
+  if velocity:moving() then
+    self:set_action("run")
+    if velocity:right() then
+      self:set_flip(Flip.none)
+    elseif velocity:left() then
+      self:set_flip(Flip.horizontal)
+    end
+  elseif velocity:stationary() then
+    self:set_action("idle")
   end
 
   self:set_velocity(velocity)
