@@ -1,89 +1,95 @@
 {
   "spritesheet": "blobs/player.png",
+  "scale": 4,
+  "gravitic": true,
   "animations": {
-    "idle": {
+    "attack": {
       "frames": [
         {
           "x": 1,
-          "y": 25,
-          "width": 20,
-          "height": 24,
-          "duration": 100
-        },
-        {
-          "x": 23,
-          "y": 25,
-          "width": 19,
-          "height": 24,
-          "duration": 100
-        },
-        {
-          "x": 54,
           "y": 1,
-          "width": 20,
-          "height": 23,
-          "duration": 100
-        },
-        {
-          "x": 76,
-          "y": 1,
-          "width": 19,
-          "height": 23,
-          "duration": 100
+          "width": 32,
+          "height": 32,
+          "duration": 120
         }
       ]
     },
-    "walk": {
+    "jump-while-attack": {
       "frames": [
         {
-          "x": 1,
+          "x": 35,
           "y": 1,
-          "width": 23,
-          "height": 22,
-          "duration": 100
+          "width": 32,
+          "height": 32,
+          "duration": 120
+        }
+      ]
+    },
+    "idle": {
+      "frames": [
+        {
+          "x": 69,
+          "y": 1,
+          "width": 32,
+          "height": 32,
+          "duration": 120
         },
         {
-          "x": 26,
+          "x": 103,
           "y": 1,
-          "width": 26,
-          "height": 22,
-          "duration": 100
+          "width": 32,
+          "height": 32,
+          "duration": 120
         },
         {
-          "x": 44,
-          "y": 26,
-          "width": 17,
-          "height": 24,
-          "duration": 100
+          "x": 137,
+          "y": 1,
+          "width": 32,
+          "height": 32,
+          "duration": 120
+        },
+        {
+          "x": 171,
+          "y": 1,
+          "width": 32,
+          "height": 32,
+          "duration": 120
         }
       ]
     },
     "jump": {
       "frames": [
         {
-          "x": 95,
-          "y": 27,
-          "width": 27,
-          "height": 30,
-          "duration": 100
+          "x": 205,
+          "y": 1,
+          "width": 32,
+          "height": 32,
+          "duration": 120
         }
       ]
     },
-    "attack": {
+    "run": {
       "frames": [
         {
-          "x": 97,
+          "x": 239,
           "y": 1,
-          "width": 27,
-          "height": 24,
-          "duration": 100
+          "width": 32,
+          "height": 32,
+          "duration": 120
         },
         {
-          "x": 63,
-          "y": 26,
-          "width": 30,
-          "height": 30,
-          "duration": 100
+          "x": 273,
+          "y": 1,
+          "width": 32,
+          "height": 32,
+          "duration": 120
+        },
+        {
+          "x": 307,
+          "y": 1,
+          "width": 32,
+          "height": 32,
+          "duration": 120
         }
       ]
     }
