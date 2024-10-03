@@ -15,11 +15,32 @@ player:set_action("run")
 player:set_placement(0, 580)
 
 local function loop(delta)
-  print("Lua loop function called with delta: " .. delta)
+  print("loop function called with delta: " .. delta)
 end
 
-print(type(loopable_proxy))
+local proxy = loopable_proxy.new(function()
+  print("loop function")
+end)
 
--- engine.add_loopable(loopable_proxy(loop))
+print("proxy " .. type(proxy))
+
+-- engine.add_loopable(proxy)
+
+
+player:on_update(function(self)
+  local velocity = Vector2D.new(0, 0)
+
+  if engine:is_keydown(KeyEvent.a) then
+    velocity.x = -.4
+  elseif engine:is_keydown(KeyEvent.d) then
+    velocity.x = .4
+  end
+
+  if engine:is_keydown(KeyEvent.space) then
+    velocity.y = -3
+  end
+
+  self:set_velocity(velocity)
+end)
 
 engine:run()
