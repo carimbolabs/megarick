@@ -1,6 +1,6 @@
 {
   "spritesheet": "blobs/bullet.png",
-  "scale": 4,
+  "scale": 2,
   "gravitic": false,
   "animations": {
     "shoot": {

@@ -38,6 +38,12 @@ candle2:set_placement(800, 100)
 local bullet = engine:spawn("bullet")
 bullet:set_action("shoot")
 bullet:set_placement(300, 200)
+bullet:set_velocity(Vector2D.new(0.4, 0))
+bullet:on_update(function(self)
+  local pos = self.id
+  print("bullet id: " .. pos)
+  print("bullet x: " .. self.x .. ", y: " .. self.y)
+end)
 
 local function loop(delta)
   print("loop function called with delta: " .. delta)
