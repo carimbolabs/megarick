@@ -9,6 +9,12 @@ engine:prefetch({
   "blobs/player.png",
 })
 
+local state = {
+  space = false
+}
+
+local postal = PostalService.new()
+
 local octopus = engine:spawn("octopus")
 octopus:set_action("idle")
 octopus:set_placement(720, 410)
@@ -40,15 +46,21 @@ player:on_update(function(self)
   end
 
   if engine:is_keydown(KeyEvent.space) then
-    velocity.y = -2
+    if not state.space then
+      local mail = Mail.new(0, "hit")
+      postal.post(mail)
+      state.space = true
+    end
+  else
+    state.space = false
   end
 
   if velocity:moving() then
     self:set_action("run")
-    if velocity:right() then
-      self:set_flip(Flip.none)
-    elseif velocity:left() then
+    if velocity:left() then
       self:set_flip(Flip.horizontal)
+    else
+      self:set_flip(Flip.none)
     end
   elseif velocity:stationary() then
     self:set_action("idle")
