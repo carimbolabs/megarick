@@ -1,0 +1,32 @@
+{
+  "spritesheet": "blobs/candle.png",
+  "scale": 4,
+  "gravitic": false,
+  "animations": {
+    "on": {
+      "frames": [
+        {
+          "x": 1,
+          "y": 1,
+          "width": 14,
+          "height": 31,
+          "duration": 120
+        },
+        {
+          "x": 1,
+          "y": 34,
+          "width": 14,
+          "height": 31,
+          "duration": 120
+        },
+        {
+          "x": 1,
+          "y": 67,
+          "width": 14,
+          "height": 31,
+          "duration": 120
+        }
+      ]
+    }
+  }
+}

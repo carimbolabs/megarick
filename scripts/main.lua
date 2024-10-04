@@ -23,6 +23,15 @@ local player = engine:spawn("player")
 player:set_action("idle")
 player:set_placement(0, 580)
 
+local princess = engine:spawn("princess")
+princess:set_action("idle")
+princess:set_placement(1150, 580)
+
+local candle1 = engine:spawn("candle")
+princess:set_action("on")
+princess:set_placement(30, 100)
+
+
 local function loop(delta)
   print("loop function called with delta: " .. delta)
 end
