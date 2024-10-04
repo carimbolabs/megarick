@@ -3,7 +3,7 @@
   "scale": 4,
   "gravitic": false,
   "animations": {
-    "on": {
+    "light": {
       "frames": [
         {
           "x": 1,
