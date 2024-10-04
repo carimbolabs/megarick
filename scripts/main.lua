@@ -31,6 +31,14 @@ local candle1 = engine:spawn("candle")
 candle1:set_action("light")
 candle1:set_placement(30, 100)
 
+local candle2 = engine:spawn("candle")
+candle2:set_action("light")
+candle2:set_placement(800, 100)
+
+local bullet = engine:spawn("bullet")
+bullet:set_action("shoot")
+bullet:set_placement(300, 200)
+
 local function loop(delta)
   print("loop function called with delta: " .. delta)
 end
@@ -43,6 +51,9 @@ print("proxy " .. type(proxy))
 
 -- engine.add_loopable(proxy)
 
+player:on_mail(function(self, message)
+  print("from lua " .. message)
+end)
 
 player:on_update(function(self)
   local velocity = Vector2D.new(0, 0)
@@ -55,8 +66,8 @@ player:on_update(function(self)
 
   if engine:is_keydown(KeyEvent.space) then
     if not state.space then
-      local mail = Mail.new(0, "hit")
-      postal.post(mail)
+      local message = Mail.new(1, "hit")
+      postal:post(message)
       state.space = true
     end
   else
