@@ -9,15 +9,39 @@ engine:prefetch({
   "blobs/player.png",
 })
 
+local postal = PostalService.new()
+
+local bullets = {}
+
+local function i()
+  local bullet = engine:spawn("bullet")
+  bullet:set_action("shoot")
+  bullet:on_update(function(self)
+    if self.x > 860 then
+      local message = Mail.new(0, "hit")
+      postal:post(message)
+      engine:destroy(bullet)
+    end
+  end)
+
+  local x, y = 300, 580
+  local offset_x = math.random(-20, 20)
+  local offset_y = math.random(-20, 20)
+
+  bullet:set_placement(x + offset_x, y + offset_y)
+  table.insert(bullets, bullet)
+end
+
 local state = {
   space = false
 }
 
-local postal = PostalService.new()
-
 local octopus = engine:spawn("octopus")
-octopus:set_action("idle")
+octopus:set_action("attack")
 octopus:set_placement(720, 410)
+octopus:on_mail(function(self, message)
+  print('octopus received ' .. message)
+end)
 
 local player = engine:spawn("player")
 player:set_action("idle")
@@ -35,15 +59,19 @@ local candle2 = engine:spawn("candle")
 candle2:set_action("light")
 candle2:set_placement(800, 100)
 
-local bullet = engine:spawn("bullet")
-bullet:set_action("shoot")
-bullet:set_placement(300, 200)
-bullet:set_velocity(Vector2D.new(0.4, 0))
-bullet:on_update(function(self)
-  local pos = self.id
-  print("bullet id: " .. pos)
-  print("bullet x: " .. self.x .. ", y: " .. self.y)
-end)
+-- local bullet = engine:spawn("bullet")
+-- bullet:set_action("shoot")
+-- bullet:set_placement(300, 580)
+-- bullet:set_velocity(Vector2D.new(0.4, 0))
+-- bullet:on_update(function(self)
+--   if self.x > 860 then
+--     local message = Mail.new(0, "hit")
+--     postal:post(message)
+--     engine:destroy(bullet)
+--   end
+-- end)
+
+
 
 local function loop(delta)
   print("loop function called with delta: " .. delta)
@@ -58,7 +86,7 @@ print("proxy " .. type(proxy))
 -- engine.add_loopable(proxy)
 
 player:on_mail(function(self, message)
-  print("from lua " .. message)
+  -- print("from lua " .. message)
 end)
 
 player:on_update(function(self)
@@ -66,8 +94,10 @@ player:on_update(function(self)
 
   if engine:is_keydown(KeyEvent.a) then
     velocity.x = -.4
+    -- octopus:set_action("attack")
   elseif engine:is_keydown(KeyEvent.d) then
     velocity.x = .4
+    octopus:set_action("dead")
   end
 
   if engine:is_keydown(KeyEvent.space) then
