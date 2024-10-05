@@ -2,7 +2,7 @@ local engine = EngineFactory.new()
     :set_title("Mega Rick")
     :set_width(1920)
     :set_height(1080)
-    :set_fullscreen(true)
+    :set_fullscreen(false)
     :create()
 
 engine:prefetch({
@@ -56,7 +56,7 @@ player:set_placement(30, 794)
 
 local princess = engine:spawn("princess")
 princess:set_action("idle")
-princess:set_placement(1600, 800)
+princess:set_placement(1600, 806)
 
 local candle1 = engine:spawn("candle")
 candle1:set_action("light")
