@@ -1,8 +1,8 @@
 local engine = EngineFactory.new()
     :set_title("Mega Rick")
-    :set_width(1280)
-    :set_height(720)
-    :set_fullscreen(false)
+    :set_width(1920)
+    :set_height(1080)
+    :set_fullscreen(true)
     :create()
 
 engine:prefetch({
@@ -45,18 +45,18 @@ local state = {
 
 local octopus = engine:spawn("octopus")
 octopus:set_action("attack")
-octopus:set_placement(720, 410)
+octopus:set_placement(1200, 620)
 octopus:on_mail(function(self, message)
   print('octopus received ' .. message)
 end)
 
 local player = engine:spawn("player")
 player:set_action("idle")
-player:set_placement(0, 580)
+player:set_placement(30, 794)
 
 local princess = engine:spawn("princess")
 princess:set_action("idle")
-princess:set_placement(1150, 580)
+princess:set_placement(1600, 800)
 
 local candle1 = engine:spawn("candle")
 candle1:set_action("light")
