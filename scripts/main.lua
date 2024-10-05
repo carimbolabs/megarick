@@ -6,8 +6,15 @@ local engine = EngineFactory.new()
     :create()
 
 engine:prefetch({
+  "blobs/bullet.png",
+  "blobs/candle.png",
+  "blobs/octopus.png",
   "blobs/player.png",
+  "blobs/princess.png",
+  "blobs/ship.png",
 })
+
+engine:set_scene("ship")
 
 local postal = PostalService.new()
 
