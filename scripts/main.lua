@@ -80,7 +80,6 @@ candle2:set_placement(1800, 100)
 --   end
 -- end)
 local bullet_pool = {}
-local active_bullets = {}
 
 local function create_bullet_pool(size)
   for _ = 1, size do
