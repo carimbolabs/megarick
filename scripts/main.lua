@@ -109,7 +109,7 @@ player:on_update(function(self)
 
   if engine:is_keydown(KeyEvent.space) then
     if not state.space then
-      local message = Mail.new(1, "hit")
+      local message = Mail.new(0, "player", "hit")
       postal:post(message)
       state.space = true
     end
