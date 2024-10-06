@@ -29,8 +29,8 @@ local state = {
   space = false
 }
 
-local octopus = engine:spawn("octopus")
-local life = 13
+local octopus = engine:spawn("player")
+local life = 40
 
 octopus:set_action("idle")
 octopus:set_placement(1200, 620)
@@ -39,7 +39,7 @@ octopus:on_mail(function(self, message)
     octopus:set_action("attack")
     life = life - 1
     if life <= 0 then
-      self:set_action("dead")
+      self:set_action("jump-while-attack")
     else
       -- local explosion = engine:spawn("explosion")
       -- explosion:set_action("explosion")
@@ -48,13 +48,13 @@ octopus:on_mail(function(self, message)
   end
 end)
 
-local player = engine:spawn("player")
-player:set_action("idle")
-player:set_placement(30, 794)
+local player = engine:spawn("octopus")
+player:set_action("attack")
+player:set_placement(30, 600)
 
 local princess = engine:spawn("princess")
 princess:set_action("idle")
-princess:set_placement(1600, 806)
+princess:set_placement(1600, 400)
 
 local candle1 = engine:spawn("candle")
 candle1:set_action("light")
@@ -83,7 +83,7 @@ local bullet_pool = {}
 
 local function create_bullet_pool(size)
   for _ = 1, size do
-    local bullet = engine:spawn("bullet")
+    local bullet = engine:spawn("princess")
     bullet:set_placement(-128, -128)
 
     bullet:on_update(function(self)
@@ -105,19 +105,19 @@ end
 local function fire()
   if #bullet_pool > 0 then
     local bullet = table.remove(bullet_pool)
-    local x, y = (player.x + player.size.width) - 30, player.y + 30
+    local x, y = (player.x + player.size.width) - 30, player.y - 200
     local offset_y = (math.random(-2, 2)) * 20
 
     bullet:set_placement(x, y + offset_y)
     bullet:set_velocity(Vector2D.new(0.6, 0))
-    bullet:set_action("shoot")
+    bullet:set_action("idle")
 
     local sound = "bomb" .. math.random(1, 2)
     soundmanager:play(sound)
   end
 end
 
-create_bullet_pool(3)
+create_bullet_pool(30)
 
 
 player:on_update(function(self)
@@ -141,7 +141,7 @@ player:on_update(function(self)
   end
 
   if velocity:moving() then
-    self:set_action("run")
+    -- self:set_action("run")
     if velocity:left() then
       self:set_flip(Flip.horizontal)
     else
