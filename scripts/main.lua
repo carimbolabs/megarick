@@ -25,38 +25,26 @@ local soundmanager = engine:soundmanager()
 
 local bullets = {}
 
-local function i()
-  local bullet = engine:spawn("bullet")
-  bullet:set_action("shoot")
-  bullet:on_update(function(self)
-    if self.x > 860 then
-      local message = Mail.new(0, "hit")
-      postal:post(message)
-      engine:destroy(bullet)
-    end
-  end)
-
-  local x, y = 300, 580
-  local offset_x = math.random(-20, 20)
-  local offset_y = math.random(-20, 20)
-
-  bullet:set_placement(x + offset_x, y + offset_y)
-  table.insert(bullets, bullet)
-end
-
 local state = {
   space = false
 }
 
 local octopus = engine:spawn("octopus")
-octopus:set_action("attack")
+local life = 13
+
+octopus:set_action("idle")
 octopus:set_placement(1200, 620)
 octopus:on_mail(function(self, message)
-  print('octopus received ' .. message)
   if message == 'hit' then
-    local explosion = engine:spawn("explosion")
-    explosion:set_action("explosion")
-    explosion:set_placement(1300, 700)
+    octopus:set_action("attack")
+    life = life - 1
+    if life <= 0 then
+      self:set_action("dead")
+    else
+      -- local explosion = engine:spawn("explosion")
+      -- explosion:set_action("explosion")
+      -- explosion:set_placement(1300, 700)
+    end
   end
 end)
 
@@ -95,17 +83,16 @@ local bullet_pool = {}
 local active_bullets = {}
 
 local function create_bullet_pool(size)
-  for i = 1, size do
+  for _ = 1, size do
     local bullet = engine:spawn("bullet")
-    -- bullet:set_action("shoot")
-    -- bullet:set_active(false)
+    bullet:set_placement(-128, -128)
 
     bullet:on_update(function(self)
       if self.x > 1200 then
+        print("self x " .. self.x)
         local message = Mail.new(0, "bullet", "hit")
         postal:post(message)
 
-        -- bullet:set_active(false)
         bullet:unset_action()
         bullet:set_placement(-128, -128)
         table.insert(bullet_pool, bullet)
@@ -119,18 +106,15 @@ end
 local function fire()
   if #bullet_pool > 0 then
     local bullet = table.remove(bullet_pool)
-
     local x, y = (player.x + player.size.width) - 30, player.y + 30
-    -- local offset_x = (math.random(-2, 2)) * 60
     local offset_y = (math.random(-2, 2)) * 20
 
     bullet:set_placement(x, y + offset_y)
-    bullet:set_velocity(Vector2D.new(0.4, 0))
+    bullet:set_velocity(Vector2D.new(0.6, 0))
     bullet:set_action("shoot")
 
     local sound = "bomb" .. math.random(1, 2)
     soundmanager:play(sound)
-    -- table.insert(active_bullets, bullet) ???
   end
 end
 
