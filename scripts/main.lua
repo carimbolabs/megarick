@@ -60,11 +60,15 @@ princess:set_placement(1600, 806)
 
 local candle1 = engine:spawn("candle")
 candle1:set_action("light")
-candle1:set_placement(30, 100)
+candle1:set_placement(60, 100)
 
 local candle2 = engine:spawn("candle")
 candle2:set_action("light")
-candle2:set_placement(800, 100)
+candle2:set_placement(1800, 100)
+
+local explosion = engine:spawn("explosion")
+explosion:set_action("explosion")
+explosion:set_placement(1300, 700)
 
 -- local bullet = engine:spawn("bullet")
 -- bullet:set_action("shoot")
@@ -124,7 +128,7 @@ player:on_update(function(self)
     else
       self:set_flip(Flip.none)
     end
-  elseif velocity:stationary() then
+  elseif velocity:zero() then
     self:set_action("idle")
   end
 

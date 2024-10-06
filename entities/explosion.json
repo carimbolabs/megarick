@@ -1,6 +1,6 @@
 {
   "spritesheet": "blobs/explosion.png",
-  "scale": 4,
+  "scale": 2.5,
   "gravitic": false,
   "width": 52,
   "height": 72,
