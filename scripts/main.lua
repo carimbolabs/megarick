@@ -81,24 +81,44 @@ explosion:set_placement(1300, 700)
 --     engine:destroy(bullet)
 --   end
 -- end)
+local bullet_pool = {}
+local active_bullets = {}
 
+local function create_bullet_pool(size)
+  for i = 1, size do
+    local bullet = engine:spawn("bullet")
+    -- bullet:set_action("shoot")
+    -- bullet:set_active(false)
 
+    bullet:on_update(function(self)
+      if self.x > 1000 then
+        local message = Mail.new(0, "hit")
+        postal:post(message)
 
-local function loop(delta)
-  print("loop function called with delta: " .. delta)
+        bullet:set_active(false)
+        bullet:unset_action()
+        bullet:set_placement(-128, -128)
+        table.insert(bullet_pool, bullet)
+      end
+    end)
+
+    table.insert(bullet_pool, bullet)
+  end
 end
 
-local proxy = loopable_proxy.new(function()
-  print("loop function")
-end)
+local function activateBullet(x, y)
+  if #bullet_pool > 0 then
+    local bullet = table.remove(bullet_pool)
+    bullet:set_placement(x, y)
+    bullet:set_velocity(Vector2D.new(0.4, 0))
+    bullet:set_active(true)
+    bullet:set_action("shoot")
+    table.insert(active_bullets, bullet)
+  end
+end
 
-print("proxy " .. type(proxy))
+create_bullet_pool(3)
 
--- engine.add_loopable(proxy)
-
-player:on_mail(function(self, message)
-  -- print("from lua " .. message)
-end)
 
 player:on_update(function(self)
   local velocity = Vector2D.new(0, 0)
