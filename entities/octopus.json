@@ -2,6 +2,8 @@
   "spritesheet": "blobs/octopus.png",
   "scale": 4,
   "gravitic": false,
+  "width": 94,
+  "height": 75,
   "animations": {
     "attack": {
       "frames": [

@@ -2,6 +2,8 @@
   "spritesheet": "blobs/princess.png",
   "scale": 4,
   "gravitic": false,
+  "width": 18,
+  "height": 29,
   "animations": {
     "idle": {
       "frames": [

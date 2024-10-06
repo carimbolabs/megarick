@@ -2,6 +2,8 @@
   "spritesheet": "blobs/player.png",
   "scale": 4,
   "gravitic": true,
+  "width": 32,
+  "height": 32,
   "animations": {
     "attack": {
       "frames": [
