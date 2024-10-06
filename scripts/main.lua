@@ -21,6 +21,8 @@ engine:set_scene("ship")
 
 local postal = PostalService.new()
 
+local soundmanager = engine:soundmanager()
+
 local bullets = {}
 
 local function i()
@@ -125,6 +127,9 @@ local function fire()
     bullet:set_placement(x, y + offset_y)
     bullet:set_velocity(Vector2D.new(0.4, 0))
     bullet:set_action("shoot")
+
+    local sound = "bomb" .. math.random(1, 2)
+    soundmanager:play(sound)
     -- table.insert(active_bullets, bullet) ???
   end
 end
