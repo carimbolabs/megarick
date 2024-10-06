@@ -6,8 +6,11 @@ local engine = EngineFactory.new()
     :create()
 
 engine:prefetch({
+  "blobs/bomb1.ogg",
+  "blobs/bomb2.ogg",
   "blobs/bullet.png",
   "blobs/candle.png",
+  "blobs/explosion.png",
   "blobs/octopus.png",
   "blobs/player.png",
   "blobs/princess.png",
@@ -48,6 +51,11 @@ octopus:set_action("attack")
 octopus:set_placement(1200, 620)
 octopus:on_mail(function(self, message)
   print('octopus received ' .. message)
+  if message == 'hit' then
+    local explosion = engine:spawn("explosion")
+    explosion:set_action("explosion")
+    explosion:set_placement(1300, 700)
+  end
 end)
 
 local player = engine:spawn("player")
@@ -66,9 +74,9 @@ local candle2 = engine:spawn("candle")
 candle2:set_action("light")
 candle2:set_placement(1800, 100)
 
-local explosion = engine:spawn("explosion")
-explosion:set_action("explosion")
-explosion:set_placement(1300, 700)
+-- local explosion = engine:spawn("explosion")
+-- explosion:set_action("explosion")
+-- explosion:set_placement(1300, 700)
 
 -- local bullet = engine:spawn("bullet")
 -- bullet:set_action("shoot")
@@ -91,11 +99,11 @@ local function create_bullet_pool(size)
     -- bullet:set_active(false)
 
     bullet:on_update(function(self)
-      if self.x > 1000 then
-        local message = Mail.new(0, "hit")
+      if self.x > 1200 then
+        local message = Mail.new(0, "bullet", "hit")
         postal:post(message)
 
-        bullet:set_active(false)
+        -- bullet:set_active(false)
         bullet:unset_action()
         bullet:set_placement(-128, -128)
         table.insert(bullet_pool, bullet)
@@ -106,12 +114,16 @@ local function create_bullet_pool(size)
   end
 end
 
-local function activateBullet(x, y)
+local function fire()
   if #bullet_pool > 0 then
     local bullet = table.remove(bullet_pool)
-    bullet:set_placement(x, y)
+
+    local x, y = (player.x + player.size.width) - 30, player.y + 30
+    -- local offset_x = (math.random(-2, 2)) * 60
+    local offset_y = (math.random(-2, 2)) * 20
+
+    bullet:set_placement(x, y + offset_y)
     bullet:set_velocity(Vector2D.new(0.4, 0))
-    bullet:set_active(true)
     bullet:set_action("shoot")
     -- table.insert(active_bullets, bullet) ???
   end
@@ -128,13 +140,12 @@ player:on_update(function(self)
     -- octopus:set_action("attack")
   elseif engine:is_keydown(KeyEvent.d) then
     velocity.x = .4
-    octopus:set_action("dead")
+    -- octopus:set_action("dead")
   end
 
   if engine:is_keydown(KeyEvent.space) then
     if not state.space then
-      local message = Mail.new(0, "player", "hit")
-      postal:post(message)
+      fire()
       state.space = true
     end
   else
