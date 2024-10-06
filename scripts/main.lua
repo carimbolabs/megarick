@@ -113,7 +113,7 @@ local function activateBullet(x, y)
     bullet:set_velocity(Vector2D.new(0.4, 0))
     bullet:set_active(true)
     bullet:set_action("shoot")
-    table.insert(active_bullets, bullet)
+    -- table.insert(active_bullets, bullet) ???
   end
 end
 
