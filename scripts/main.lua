@@ -64,10 +64,9 @@ local function create_explosion_pool(size)
   end
 end
 
-create_explosion_pool(32)
+create_explosion_pool(9)
 
 local function bomb()
-  print("pool size " .. #explosion_pool)
   if #explosion_pool > 0 then
     local explosion = table.remove(explosion_pool)
     local x, y = octopus.x, player.y
@@ -76,10 +75,10 @@ local function bomb()
 
     explosion:set_placement(x + offset_x, y + offset_y)
     explosion:set_action("default")
-    explosion:on_update(function(self)
-      if not self.visible then
-        self:set_placement(-128, -128)
-      end
+    explosion:on_animationfinished(function(self)
+      self:unset_action()
+      self:set_placement(-128, -128)
+      table.insert(explosion_pool, self)
     end)
   end
 end
