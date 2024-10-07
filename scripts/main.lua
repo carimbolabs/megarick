@@ -14,15 +14,13 @@ engine:prefetch({
   "blobs/octopus.png",
   "blobs/player.png",
   "blobs/princess.png",
-  "blobs/ship.png",
+  "blobs/ship.png"
 })
 
 engine:set_scene("ship")
 
 local postal = PostalService.new()
-
 local soundmanager = engine:soundmanager()
-
 local octopus = engine:spawn("octopus")
 local player = engine:spawn("player")
 local princess = engine:spawn("princess")
@@ -30,46 +28,35 @@ local candle1 = engine:spawn("candle")
 local candle2 = engine:spawn("candle")
 
 local life = 20
-
+local shooting = false
 local bullet_pool = {}
 local explosion_pool = {}
 
-local function create_bullet_pool(size)
-  for _ = 1, size do
-    local bullet = engine:spawn("bullet")
-    bullet:set_placement(-128, -128)
-
-    bullet:on_update(function(self)
-      if self.x > 1200 then
-        local message = Mail.new(0, "bullet", "hit")
-        postal:post(message)
-
-        bullet:unset_action()
-        bullet:set_placement(-128, -128)
-        table.insert(bullet_pool, bullet)
-      end
-    end)
-
-    table.insert(bullet_pool, bullet)
-  end
+for _ = 1, 3 do
+  local bullet = engine:spawn("bullet")
+  bullet:set_placement(-128, -128)
+  bullet:on_update(function(self)
+    if self.x > 1200 then
+      postal:post(Mail.new(0, "bullet", "hit"))
+      bullet:unset_action()
+      bullet:set_placement(-128, -128)
+      table.insert(bullet_pool, bullet)
+    end
+  end)
+  table.insert(bullet_pool, bullet)
 end
 
-create_bullet_pool(3)
-
-local function create_explosion_pool(size)
-  for _ = 1, size do
-    local explosion = engine:spawn("explosion")
-    explosion:set_placement(-128, -128)
-    table.insert(explosion_pool, explosion)
-  end
+for _ = 1, 9 do
+  local explosion = engine:spawn("explosion")
+  explosion:set_placement(-128, -128)
+  table.insert(explosion_pool, explosion)
 end
-
-create_explosion_pool(9)
 
 local function bomb()
   if #explosion_pool > 0 then
     local explosion = table.remove(explosion_pool)
-    local x, y = octopus.x, player.y
+    local x = octopus.x
+    local y = player.y
     local offset_x = (math.random(-2, 2)) * 30
     local offset_y = (math.random(-2, 2)) * 30
 
@@ -88,9 +75,7 @@ octopus:set_placement(1200, 620)
 octopus:on_mail(function(self, message)
   if message == 'hit' then
     bomb()
-
     octopus:set_action("attack")
-
     life = life - 1
     if life <= 0 then
       self:set_action("dead")
@@ -113,7 +98,8 @@ candle2:set_placement(1800, 100)
 local function fire()
   if #bullet_pool > 0 then
     local bullet = table.remove(bullet_pool)
-    local x, y = (player.x + player.size.width) - 30, player.y + 30
+    local x = (player.x + player.size.width) - 30
+    local y = player.y + 30
     local offset_y = (math.random(-2, 2)) * 20
 
     bullet:set_placement(x, y + offset_y)
@@ -124,8 +110,6 @@ local function fire()
     soundmanager:play(sound)
   end
 end
-
-local shooting = false
 
 player:on_update(function(self)
   local velocity = Vector2D.new(0, 0)
