@@ -5,7 +5,7 @@
   "width": 52,
   "height": 72,
   "animations": {
-    "explosion": {
+    "default": {
       "frames": [
         {
           "x": 1,
@@ -47,7 +47,8 @@
           "y": 371,
           "width": 52,
           "height": 72,
-          "duration": 120
+          "duration": 120,
+          "singleshoot": true
         }
       ]
     }
