@@ -97,6 +97,10 @@ octopus:on_mail(function(self, message)
         engine:destroy(princess)
         engine:destroy(candle1)
         engine:destroy(candle2)
+
+        engine:flush()
+        engine:prefetch({ "blobs/end.png" })
+        engine:set_scene("end")
       end)
     end
   end
