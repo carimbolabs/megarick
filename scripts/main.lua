@@ -11,6 +11,7 @@ engine:prefetch({
   "blobs/bullet.png",
   "blobs/candle.png",
   "blobs/explosion.png",
+  "blobs/gameover.png",
   "blobs/octopus.png",
   "blobs/player.png",
   "blobs/princess.png",
