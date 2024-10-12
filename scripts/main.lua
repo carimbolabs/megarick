@@ -81,10 +81,7 @@ octopus:on_mail(function(self, message)
     if life <= 0 then
       self:set_action("dead")
 
-      timemanager:set(3000, function(id)
-        print("on timer...")
-        timemanager:clear(id)
-
+      timemanager:set(3000, function()
         local function destroy(pool)
           for i = #pool, 1, -1 do
             engine:destroy(pool[i])
