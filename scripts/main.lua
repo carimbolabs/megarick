@@ -20,6 +20,7 @@ engine:prefetch({
 engine:set_scene("ship")
 
 local postal = PostalService.new()
+local timemanager = TimeManager.new()
 local soundmanager = engine:soundmanager()
 local octopus = engine:spawn("octopus")
 local player = engine:spawn("player")
@@ -79,6 +80,27 @@ octopus:on_mail(function(self, message)
     life = life - 1
     if life <= 0 then
       self:set_action("dead")
+
+      timemanager:set(3000, function(id)
+        print("on timer...")
+        timemanager:clear(id)
+
+        local function destroy(pool)
+          for i = #pool, 1, -1 do
+            engine:destroy(pool[i])
+            table.remove(pool, i)
+          end
+        end
+
+        destroy(bullet_pool)
+        destroy(explosion_pool)
+
+        engine:destroy(octopus)
+        engine:destroy(player)
+        engine:destroy(princess)
+        engine:destroy(candle1)
+        engine:destroy(candle2)
+      end)
     end
   end
 end)
