@@ -72,6 +72,8 @@ local function bomb()
   end
 end
 
+local timer = false
+
 octopus:set_action("idle")
 octopus:set_placement(1200, 620)
 octopus:on_mail(function(self, message)
@@ -82,27 +84,30 @@ octopus:on_mail(function(self, message)
     if life <= 0 then
       self:set_action("dead")
 
-      timemanager:set(3000, function()
-        local function destroy(pool)
-          for i = #pool, 1, -1 do
-            engine:destroy(pool[i])
-            table.remove(pool, i)
+      if not timer then
+        timemanager:singleshot(3000, function()
+          local function destroy(pool)
+            for i = #pool, 1, -1 do
+              engine:destroy(pool[i])
+              table.remove(pool, i)
+            end
           end
-        end
 
-        destroy(bullet_pool)
-        destroy(explosion_pool)
+          destroy(bullet_pool)
+          destroy(explosion_pool)
 
-        engine:destroy(octopus)
-        engine:destroy(player)
-        engine:destroy(princess)
-        engine:destroy(candle1)
-        engine:destroy(candle2)
+          engine:destroy(octopus)
+          engine:destroy(player)
+          engine:destroy(princess)
+          engine:destroy(candle1)
+          engine:destroy(candle2)
 
-        engine:flush()
-        engine:prefetch({ "blobs/end.png" })
-        engine:set_scene("end")
-      end)
+          engine:flush()
+          engine:set_scene("gameover")
+        end)
+
+        timer = true
+      end
     end
   end
 end)
