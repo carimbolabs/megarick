@@ -11,7 +11,6 @@ engine:prefetch({
   "blobs/bullet.png",
   "blobs/candle.png",
   "blobs/explosion.png",
-  "blobs/gameover.png",
   "blobs/octopus.png",
   "blobs/player.png",
   "blobs/princess.png",
@@ -103,6 +102,7 @@ octopus:on_mail(function(self, message)
           engine:destroy(candle2)
 
           engine:flush()
+          engine:prefetch({ "blobs/gameover.png" })
           engine:set_scene("gameover")
         end)
 
