@@ -2,6 +2,8 @@ local engine = EngineFactory.new()
     :set_title("Mega Rick")
     :set_width(1920)
     :set_height(1080)
+    -- :set_width(1280)
+    -- :set_height(720)
     :set_fullscreen(false)
     :create()
 
