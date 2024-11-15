@@ -4,6 +4,7 @@ local engine = EngineFactory.new()
     :set_height(1080)
     -- :set_width(1280)
     -- :set_height(720)
+    :set_gravity(980.2)
     :set_fullscreen(false)
     :create()
 
@@ -29,6 +30,7 @@ local player = engine:spawn("player")
 local princess = engine:spawn("princess")
 local candle1 = engine:spawn("candle")
 local candle2 = engine:spawn("candle")
+local floor = engine:spawn("floor")
 
 local life = 20
 local shooting = false
@@ -115,7 +117,7 @@ octopus:on_mail(function(self, message)
 end)
 
 player:set_action("idle")
-player:set_placement(30, 794)
+player:set_placement(30, 0)
 
 princess:set_action("default")
 princess:set_placement(1600, 806)
@@ -125,6 +127,8 @@ candle1:set_placement(60, 100)
 
 candle2:set_action("default")
 candle2:set_placement(1800, 100)
+
+floor:set_placement(0, 10000)
 
 local function fire()
   if #bullet_pool > 0 then
@@ -143,35 +147,25 @@ local function fire()
 end
 
 player:on_update(function(self)
-  local velocity = Vector2D.new(0, 0)
+  local velocity = 0
 
-  if engine:is_keydown(KeyEvent.space) then
-    if not shooting then
-      fire()
-      shooting = true
-    end
-  else
+  if engine:is_keydown(KeyEvent.space) and not shooting then
+    fire()
+    shooting = true
+  elseif not engine:is_keydown(KeyEvent.space) then
     shooting = false
   end
 
   if engine:is_keydown(KeyEvent.a) then
-    velocity.x = -.4
+    velocity = -300
+    self:set_flip(Flip.horizontal)
   elseif engine:is_keydown(KeyEvent.d) then
-    velocity.x = .4
+    velocity = 300
+    self:set_flip(Flip.none)
   end
 
-  if velocity:moving() then
-    self:set_action("run")
-    if velocity:left() then
-      self:set_flip(Flip.horizontal)
-    else
-      self:set_flip(Flip.none)
-    end
-  elseif velocity:zero() then
-    self:set_action("idle")
-  end
-
-  self:set_velocity(velocity)
+  self:set_action(velocity ~= 0 and "run" or "idle")
+  self:move(velocity)
 end)
 
 engine:run()

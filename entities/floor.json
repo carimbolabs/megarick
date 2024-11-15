@@ -1,0 +1,11 @@
+{
+	"size": {
+		"scale": 1,
+		"width": 10000,
+		"height": 1
+	},
+	"animations": [],
+	"physics": {
+		"type": "static"
+	}
+}
