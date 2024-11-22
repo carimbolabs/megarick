@@ -188,6 +188,9 @@
 		}
 	},
 	"physics": {
+		"collision": {
+			"type": "enemy"
+		},
 		"type": "static"
 	}
 }

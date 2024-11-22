@@ -17,7 +17,8 @@ engine:prefetch({
   "blobs/octopus.png",
   "blobs/player.png",
   "blobs/princess.png",
-  "blobs/ship.png"
+  "blobs/ship.png",
+  "blobs/fixedsys.png"
 })
 
 engine:set_scene("ship")

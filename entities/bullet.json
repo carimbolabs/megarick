@@ -75,6 +75,10 @@
 		}
 	},
 	"physics": {
+		"collision": {
+			"type": "bullet",
+			"from": "player"
+		},
 		"type": "kinematic",
 		"margin": {
 			"top": 0,

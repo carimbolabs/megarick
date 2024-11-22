@@ -118,6 +118,9 @@
 		}
 	},
 	"physics": {
+		"collision": {
+			"type": "player"
+		},
 		"density": 1.0,
 		"type": "dynamic",
 		"margin": {

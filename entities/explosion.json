@@ -67,6 +67,9 @@
 		}
 	},
 	"physics": {
+		"collision": {
+			"type": "wall"
+		},
 		"type": "static",
 		"margin": {
 			"top": 0,

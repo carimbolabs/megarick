@@ -6,6 +6,9 @@
 	},
 	"animations": [],
 	"physics": {
+		"collision": {
+			"type": "wall"
+		},
 		"type": "static"
 	}
 }
