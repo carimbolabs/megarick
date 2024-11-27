@@ -8,7 +8,15 @@ local engine = EngineFactory.new()
     :set_fullscreen(false)
     :create()
 
-engine:prefetch({
+local postal = PostalService.new()
+local timemanager = TimeManager.new()
+local entitymanager = engine:entitymanager()
+local fontfactory = engine:fontfactory()
+local overlay = engine:overlay()
+local resourcemanager = engine:resourcemanager()
+local soundmanager = engine:soundmanager()
+
+resourcemanager:prefetch({
   "blobs/bomb1.ogg",
   "blobs/bomb2.ogg",
   "blobs/bullet.png",
@@ -18,20 +26,16 @@ engine:prefetch({
   "blobs/player.png",
   "blobs/princess.png",
   "blobs/ship.png",
-  "blobs/fixedsys.png"
 })
 
 engine:set_scene("ship")
 
-local postal = PostalService.new()
-local timemanager = TimeManager.new()
-local soundmanager = engine:soundmanager()
-local octopus = engine:spawn("octopus")
-local player = engine:spawn("player")
-local princess = engine:spawn("princess")
-local candle1 = engine:spawn("candle")
-local candle2 = engine:spawn("candle")
-local floor = engine:spawn("floor")
+local octopus = entitymanager:spawn("octopus")
+local player = entitymanager:spawn("player")
+local princess = entitymanager:spawn("princess")
+local candle1 = entitymanager:spawn("candle")
+local candle2 = entitymanager:spawn("candle")
+local floor = entitymanager:spawn("floor")
 
 local life = 20
 local shooting = false
@@ -39,7 +43,7 @@ local bullet_pool = {}
 local explosion_pool = {}
 
 for _ = 1, 3 do
-  local bullet = engine:spawn("bullet")
+  local bullet = entitymanager:spawn("bullet")
   bullet:set_placement(-128, -128)
   bullet:on_update(function(self)
     if self.x > 1200 then
@@ -53,10 +57,65 @@ for _ = 1, 3 do
 end
 
 for _ = 1, 9 do
-  local explosion = engine:spawn("explosion")
+  local explosion = entitymanager:spawn("explosion")
   explosion:set_placement(-1024, -1024)
   table.insert(explosion_pool, explosion)
 end
+
+--
+--
+--
+--
+--
+
+-- print("1")
+-- local widget = overlay:create(WidgetType.label)
+-- print("2")
+-- print(widget)
+-- print("3")
+-- local label = to_label(widget)
+-- print("4")
+-- print(label)
+-- print(5)
+-- print(6)
+-- print(font)
+-- print(7)
+--
+local font = fontfactory:get("fixedsys")
+-- print("font")
+-- print(font)
+-- local label = Label.new()
+-- label:set("Hello world!", 10, 10)
+-- label:set_font(font)
+-- overlay:add(label)
+-- label:set("Rodrigo")
+-- overlay:remove(label)
+
+local label = overlay:create(WidgetType.label)
+label:set_font(font)
+label:set("Hello World", 20, 20)
+--overlay:destroy(label)
+-- if label then
+--   print("Label created successfully!")
+--   label:set_font(fontfactory:get("fixedsys"))
+--   label:set("Hello world!", 10, 10)
+-- else
+--   print("Failed to cast widget to label")
+-- end
+
+-- local label = to_label(overlay:create(WidgetType.label))
+-- local font = fontfactory:get("fixedsys")
+-- print(">>>>>>>>>>>")
+-- print(label)
+-- print(font)
+-- print(">>>>>>>>>>>")
+-- label:set_font(fontfactory:get("fixedsys"))
+-- label:set("Hello world!", 10, 10)
+--
+--
+--
+--
+--
 
 local function bomb()
   if #explosion_pool > 0 then
@@ -92,7 +151,7 @@ octopus:on_mail(function(self, message)
         timemanager:singleshot(3000, function()
           local function destroy(pool)
             for i = #pool, 1, -1 do
-              engine:destroy(pool[i])
+              entitymanager:destroy(pool[i])
               table.remove(pool, i)
             end
           end
@@ -100,11 +159,11 @@ octopus:on_mail(function(self, message)
           destroy(bullet_pool)
           destroy(explosion_pool)
 
-          engine:destroy(octopus)
-          engine:destroy(player)
-          engine:destroy(princess)
-          engine:destroy(candle1)
-          engine:destroy(candle2)
+          entitymanager:destroy(octopus)
+          entitymanager:destroy(player)
+          entitymanager:destroy(princess)
+          entitymanager:destroy(candle1)
+          entitymanager:destroy(candle2)
 
           engine:flush()
           engine:prefetch({ "blobs/gameover.png" })
@@ -143,8 +202,8 @@ local function fire()
   --   -- bullet:set_velocity(Vector2D.new(0.6, 0))
   --   bullet:set_action("default")
 
-  --   local sound = "bomb" .. math.random(1, 2)
-  --   soundmanager:play(sound)
+  local sound = "bomb" .. math.random(1, 2)
+  soundmanager:play(sound)
   -- end
 end
 
@@ -163,6 +222,7 @@ player:on_update(function(self)
   end
 
   if engine:is_keydown(KeyEvent.space) then -- and self.velocity.y == 0 then
+    fire()
     self:move(self.velocity.x, -1000)
   end
 end)
