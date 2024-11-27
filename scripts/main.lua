@@ -11,6 +11,7 @@ local engine = EngineFactory.new()
 local postal = PostalService.new()
 local timemanager = TimeManager.new()
 local entitymanager = engine:entitymanager()
+local statemanager = engine:statemanager()
 local fontfactory = engine:fontfactory()
 local overlay = engine:overlay()
 local resourcemanager = engine:resourcemanager()
@@ -208,11 +209,11 @@ local function fire()
 end
 
 player:on_update(function(self)
-  if engine:is_keydown(KeyEvent.a) then
+  if statemanager:is_keydown(KeyEvent.a) then
     self:set_flip(Flip.horizontal)
     self:set_action("run")
     self:move(-300, self.velocity.y)
-  elseif engine:is_keydown(KeyEvent.d) then
+  elseif statemanager:is_keydown(KeyEvent.d) then
     self:set_flip(Flip.none)
     self:set_action("run")
     self:move(300, self.velocity.y)
@@ -221,7 +222,7 @@ player:on_update(function(self)
     self:move(0, self.velocity.y)
   end
 
-  if engine:is_keydown(KeyEvent.space) then -- and self.velocity.y == 0 then
+  if statemanager:is_keydown(KeyEvent.space) then -- and self.velocity.y == 0 then
     fire()
     self:move(self.velocity.x, -1000)
   end
