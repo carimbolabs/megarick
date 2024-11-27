@@ -1,11 +1,11 @@
 local engine = EngineFactory.new()
-    :set_title("Mega Rick")
-    :set_width(1920)
-    :set_height(1080)
+    :with_title("Mega Rick")
+    :with_width(1920)
+    :with_height(1080)
     -- :set_width(1280)
     -- :set_height(720)
-    :set_gravity(980.2)
-    :set_fullscreen(false)
+    :with_gravity(980.2)
+    :with_fullscreen(false)
     :create()
 
 local postal = PostalService.new()
@@ -16,6 +16,7 @@ local fontfactory = engine:fontfactory()
 local overlay = engine:overlay()
 local resourcemanager = engine:resourcemanager()
 local soundmanager = engine:soundmanager()
+local scenemanager = engine:scenemanager()
 
 resourcemanager:prefetch({
   "blobs/bomb1.ogg",
@@ -29,14 +30,14 @@ resourcemanager:prefetch({
   "blobs/ship.png",
 })
 
-engine:set_scene("ship")
-
 local octopus = entitymanager:spawn("octopus")
 local player = entitymanager:spawn("player")
 local princess = entitymanager:spawn("princess")
 local candle1 = entitymanager:spawn("candle")
 local candle2 = entitymanager:spawn("candle")
 local floor = entitymanager:spawn("floor")
+
+scenemanager:set("ship")
 
 local life = 20
 local shooting = false
