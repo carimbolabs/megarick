@@ -1,3 +1,8 @@
+local helpers = require("helpers")
+
+print(helpers)
+helpers.hello()
+
 local engine = EngineFactory.new()
     :with_title("Mega Rick")
     :with_width(1920)
@@ -30,11 +35,11 @@ resourcemanager:prefetch({
   "blobs/ship.png",
 })
 
+local candle1 = entitymanager:spawn("candle")
+local candle2 = entitymanager:spawn("candle")
 local octopus = entitymanager:spawn("octopus")
 local player = entitymanager:spawn("player")
 local princess = entitymanager:spawn("princess")
-local candle1 = entitymanager:spawn("candle")
-local candle2 = entitymanager:spawn("candle")
 local floor = entitymanager:spawn("floor")
 
 scenemanager:set("ship")
@@ -191,6 +196,9 @@ candle2:set_action("default")
 candle2:set_placement(1800, 100)
 
 floor:set_placement(-16192, 923)
+
+local sound = "bomb" .. math.random(1, 2)
+soundmanager:play(sound)
 
 local function fire()
   print("jump!")
