@@ -1,47 +1,52 @@
-local helpers = require("helpers")
-
-helpers.hello()
-
-_G.engine = EngineFactory.new()
-    :with_title("Mega Rick")
-    :with_width(1920)
-    :with_height(1080)
-    -- :set_width(1280)
-    -- :set_height(720)
-    -- :with_gravity(980.2)
-    :with_gravity(0)
-    :with_fullscreen(false)
-    :create()
+local store = {}
 
 function setup()
-  print("setup")
+  _G.engine = EngineFactory.new()
+      :with_title("Mega Rick")
+      :with_width(1920)
+      :with_height(1080)
+      :with_gravity(0)
+      :with_fullscreen(false)
+      :create()
+
+  store.postalservice = PostalService.new()
+  store.timemanager = TimeManager.new()
+  store.entitymanager = engine:entitymanager()
+  store.fontfactory = engine:fontfactory()
+  store.io = Socket.new("ws://localhost:3000")
+  store.overlay = engine:overlay()
+  store.resourcemanager = engine:resourcemanager()
+  store.scenemanager = engine:scenemanager()
+  store.soundmanager = engine:soundmanager()
+  store.statemanager = engine:statemanager()
+
+  store.resourcemanager:prefetch({
+    "blobs/bomb1.ogg",
+    "blobs/bomb2.ogg",
+    "blobs/bullet.png",
+    "blobs/candle.png",
+    "blobs/explosion.png",
+    "blobs/octopus.png",
+    "blobs/player.png",
+    "blobs/princess.png",
+    "blobs/ship.png",
+  })
+
+  local player = entitymanager:spawn("player")
+  player:set_action("idle")
+  player:set_placement(30, 794)
+  store.player = player
+
+  -- while resourcemanager:busy() do
+  --   delay(10)
+  -- end
+
+  store.io:connect()
 end
 
 function loop()
-  print("on loop")
+
 end
-
-local postal = PostalService.new()
-local timemanager = TimeManager.new()
-local entitymanager = engine:entitymanager()
-local statemanager = engine:statemanager()
-local fontfactory = engine:fontfactory()
-local overlay = engine:overlay()
-local resourcemanager = engine:resourcemanager()
-local soundmanager = engine:soundmanager()
-local scenemanager = engine:scenemanager()
-
-resourcemanager:prefetch({
-  "blobs/bomb1.ogg",
-  "blobs/bomb2.ogg",
-  "blobs/bullet.png",
-  "blobs/candle.png",
-  "blobs/explosion.png",
-  "blobs/octopus.png",
-  "blobs/player.png",
-  "blobs/princess.png",
-  "blobs/ship.png",
-})
 
 scenemanager:set("ship")
 
@@ -58,8 +63,6 @@ local player = entitymanager:spawn("player")
 local princess = entitymanager:spawn("princess")
 local floor = entitymanager:spawn("floor")
 
-local io = Socket.new("ws://localhost:3000/socket.io/?transport=websocket&EIO=4")
-io:connect()
 -- scenemanager:set("ship")
 
 -- local life = 20
