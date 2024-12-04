@@ -2,16 +2,24 @@ local helpers = require("helpers")
 
 helpers.hello()
 
-local engine = EngineFactory.new()
+_G.engine = EngineFactory.new()
     :with_title("Mega Rick")
     :with_width(1920)
     :with_height(1080)
     -- :set_width(1280)
     -- :set_height(720)
-    :with_gravity(980.2)
+    -- :with_gravity(980.2)
+    :with_gravity(0)
     :with_fullscreen(false)
     :create()
 
+function setup()
+  print("setup")
+end
+
+function loop()
+  print("on loop")
+end
 
 local postal = PostalService.new()
 local timemanager = TimeManager.new()
@@ -50,6 +58,8 @@ local player = entitymanager:spawn("player")
 local princess = entitymanager:spawn("princess")
 local floor = entitymanager:spawn("floor")
 
+local io = Socket.new("ws://localhost:3000/socket.io/?transport=websocket&EIO=4")
+io:connect()
 -- scenemanager:set("ship")
 
 -- local life = 20
@@ -241,10 +251,16 @@ player:on_update(function(self)
 
   if statemanager:is_keydown(KeyEvent.space) then -- and self.velocity.y == 0 then
     -- fire()
+    --
+    print("before")
+    io:emit("messsage", "hello world")
+    print("after")
     self:move(self.velocity.x, -1000)
   end
 end)
 
 -- engine:run()
 
-engine:run()
+function run()
+  engine:run()
+end
