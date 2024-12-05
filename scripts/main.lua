@@ -89,7 +89,14 @@ function setup()
   scenemanager:set("ship")
 
   io:on("myevent", function(data)
-    print("on event " .. data)
+    for key, value in pairs(data) do
+      print(">>> ", key, value)
+    end
+
+    local payload = {
+      key = "123"
+    }
+    io:emit("lua", payload)
   end)
 end
 
