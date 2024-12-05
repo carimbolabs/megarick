@@ -1,3 +1,5 @@
+---@diagnostic disable: undefined-global
+
 local postalservice
 local timemanager
 local entitymanager
@@ -85,6 +87,10 @@ function setup()
   -- end
 
   scenemanager:set("ship")
+
+  io:on("myevent", function(data)
+    print("on event " .. data)
+  end)
 end
 
 function loop()
