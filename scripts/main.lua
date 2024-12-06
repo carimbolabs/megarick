@@ -11,15 +11,17 @@ local scenemanager
 local soundmanager
 local statemanager
 
-local player
 local candle1
 local candle2
 local octopus
 local princess
+local player
 local floor
 
 local font
 local label
+
+local key_states = {}
 
 function setup()
   _G.engine = EngineFactory.new()
@@ -58,10 +60,6 @@ function setup()
   label:set_font(font)
   label:set("Hello World!", 20, 20)
 
-  player = entitymanager:spawn("player")
-  player:set_action("idle")
-  player:set_placement(30, 794)
-
   candle1 = entitymanager:spawn("candle")
   candle1:set_placement(60, 100)
   candle1:set_action("default")
@@ -78,6 +76,10 @@ function setup()
   princess:set_action("default")
   princess:set_placement(1600, 806)
 
+  player = entitymanager:spawn("player")
+  player:set_action("idle")
+  player:set_placement(30, 794)
+
   floor = entitymanager:spawn("floor")
   floor:set_placement(-16192, 923)
 
@@ -90,9 +92,13 @@ function setup()
 
   io:on("myevent", function(data)
     for key, value in pairs(data) do
-      print(">>> ", key, value)
+      if type(value) == "table" then
+        local array_string = table.concat(value, ", ")
+        print(key .. ": " .. "[" .. array_string .. "]")
+      else
+        print(key .. ": " .. tostring(value))
+      end
     end
-
     local payload = {
       key = "123"
     }
@@ -114,9 +120,18 @@ function loop()
     player:move(0, player.velocity.y)
   end
 
+
   if statemanager:is_keydown(KeyEvent.space) then -- and self.velocity.y == 0 then
-    -- fire()
-    -- self:move(self.velocity.x, -1000)
+    if not key_states[KeyEvent.space] then
+      key_states[KeyEvent.space] = true
+      io:rpc("foo", { ["bar"] = 123 }, function(result)
+        print("RPC result " .. JSON.stringify(result))
+      end)
+
+      -- self:move(self.velocity.x, -1000)
+    end
+  else
+    key_states[KeyEvent.space] = false
   end
 end
 
