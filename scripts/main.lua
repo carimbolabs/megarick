@@ -4,7 +4,6 @@ local postalservice
 local timemanager
 local entitymanager
 local fontfactory
-local io
 local overlay
 local resourcemanager
 local scenemanager
@@ -78,12 +77,6 @@ local function gameover()
       destroy(explosion_pool)
 
       entitymanager:destroy(octopus)
-      entitymanager:destroy(player)
-      entitymanager:destroy(princess)
-      entitymanager:destroy(candle1)
-      entitymanager:destroy(candle2)
-
-      entitymanager:destroy(octopus)
       octopus = nil
 
       entitymanager:destroy(player)
@@ -104,7 +97,6 @@ local function gameover()
       collectgarbage("collect")
 
       resourcemanager:flush()
-      resourcemanager:prefetch({ "blobs/gameover.png" })
       scenemanager:set("gameover")
     end)
     timer = true
@@ -141,18 +133,6 @@ function setup()
   scenemanager = engine:scenemanager()
   soundmanager = engine:soundmanager()
   statemanager = engine:statemanager()
-
-  resourcemanager:prefetch({
-    "blobs/bomb1.ogg",
-    "blobs/bomb2.ogg",
-    "blobs/bullet.png",
-    "blobs/candle.png",
-    "blobs/explosion.png",
-    "blobs/octopus.png",
-    "blobs/player.png",
-    "blobs/princess.png",
-    "blobs/ship.png",
-  })
 
   font = fontfactory:get("fixedsys")
   label = overlay:create(WidgetType.label)
