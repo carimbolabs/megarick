@@ -53,7 +53,7 @@ local function boom()
     local offset_y = (math.random(-2, 2)) * 30
 
     explosion:set_placement(x + offset_x, y + offset_y)
-    -- explosion:set_action("default")
+    explosion:set_action("default")
     explosion:on_animationfinished(function(self)
       self:unset_action()
       self:set_placement(-1024, -1024)
@@ -97,6 +97,9 @@ local function gameover()
 
       entitymanager:destroy(candle2)
       candle2 = nil
+
+      entitymanager:destroy(floor)
+      floor = nil
 
       collectgarbage("collect")
 
@@ -233,12 +236,6 @@ function loop()
     end
   else
     key_states[KeyEvent.space] = false
-  end
-
-  if collectgarbage("count") / 1024 > 8 then
-    collectgarbage("collect")
-  else
-    collectgarbage("step", 1)
   end
 end
 
