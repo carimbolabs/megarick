@@ -4,6 +4,7 @@ local postalservice
 local timemanager
 local entitymanager
 local fontfactory
+local io
 local overlay
 local resourcemanager
 local scenemanager
@@ -30,12 +31,12 @@ local timer = false
 local function fire()
   if #bullet_pool > 0 then
     local bullet = table.remove(bullet_pool)
-    local x = (player.x + player.size.width) - 30
-    local y = player.y + 30
-    local offset_y = (math.random(-2, 2)) * 20
+    local x = (player.x + player.size.width) + 100
+    local y = player.y + 10
+    local offset_y = (math.random(-2, 2)) * 30
 
     bullet:set_placement(x, y + offset_y)
-    bullet:move(30000, 0)
+    bullet:move(1000, 0)
     bullet:set_action("default")
 
     local sound = "bomb" .. math.random(1, 2)
@@ -55,7 +56,7 @@ local function boom()
     explosion:set_action("default")
     explosion:on_animationfinished(function(self)
       self:unset_action()
-      self:set_placement(-1024, -1024)
+      self:set_placement(-128, -128)
       table.insert(explosion_pool, self)
     end)
   end
@@ -128,6 +129,7 @@ function setup()
   timemanager = TimeManager.new()
   entitymanager = engine:entitymanager()
   fontfactory = engine:fontfactory()
+  io = Socket.new()
   overlay = engine:overlay()
   resourcemanager = engine:resourcemanager()
   scenemanager = engine:scenemanager()
@@ -173,18 +175,18 @@ function setup()
     bullet:set_placement(-128, -128)
     bullet:on_update(function(self)
       if self.x > 1200 then
-        postalservice:post(Mail.new(octopus, "bullet", "hit"))
+        -- postalservice:post(Mail.new(octopus, "bullet", "hit"))
         bullet:unset_action()
-        bullet:set_placement(-1024, -1024)
+        bullet:set_placement(-128, -128)
         table.insert(bullet_pool, bullet)
       end
     end)
     table.insert(bullet_pool, bullet)
   end
 
-  for _ = 1, 9 do
+  for _ = 1, 6 do
     local explosion = entitymanager:spawn("explosion")
-    explosion:set_placement(-1024, -1024)
+    explosion:set_placement(-128, -128)
     table.insert(explosion_pool, explosion)
   end
 
@@ -213,6 +215,10 @@ function loop()
     if not key_states[KeyEvent.space] then
       key_states[KeyEvent.space] = true
       fire()
+
+      io:rpc("send", { ["message"] = "hello world" }, function(result)
+        print("RPC " .. JSON.stringify(result))
+      end)
     end
   else
     key_states[KeyEvent.space] = false
