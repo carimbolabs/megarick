@@ -132,7 +132,7 @@ function setup()
 
   font = fontfactory:get("fixedsys")
   label = overlay:create(WidgetType.label)
-  label:set_font(font)
+  label.font = font
   label:set("Hello World!", 20, 20)
 
   candle1 = entitymanager:spawn("candle")
