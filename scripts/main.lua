@@ -1,4 +1,4 @@
----@diagnostic disable: undefined-global
+---@diagnostic disable: undefined-global, lowercase-global
 
 local postalservice
 local timemanager
@@ -180,7 +180,7 @@ function setup()
     table.insert(bullet_pool, bullet)
   end
 
-  for _ = 1, 6 do
+  for _ = 1, 9 do
     local explosion = entitymanager:spawn("explosion")
     explosion.placement:set(-128, -128)
     explosion:on_animationfinished(function(self)
