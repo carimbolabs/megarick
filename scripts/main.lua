@@ -19,7 +19,7 @@ local player
 local floor
 
 local font
-local label
+local vitality
 
 local key_states = {}
 local bullet_pool = {}
@@ -89,6 +89,9 @@ local function gameover()
       entitymanager:destroy(floor)
       floor = nil
 
+      overlay:destroy(vitality)
+      vitality = nil
+
       collectgarbage("collect")
 
       resourcemanager:flush()
@@ -130,10 +133,10 @@ function setup()
   soundmanager = engine:soundmanager()
   statemanager = engine:statemanager()
 
-  font = fontfactory:get("fixedsys")
-  label = overlay:create(WidgetType.label)
-  label.font = font
-  label:set("Hello World!", 20, 20)
+  emoji = fontfactory:get("emoji")
+  vitality = overlay:create(WidgetType.label)
+  vitality.font = emoji
+  vitality:set("ooooo", 1300, 660)
 
   candle1 = entitymanager:spawn("candle")
   candle1.placement:set(60, 100)
