@@ -203,19 +203,17 @@ function loop()
     return
   end
 
+  player.velocity.x = 0
+
   if statemanager:is_keydown(KeyEvent.a) then
     player.reflection:set(Reflection.horizontal)
-    player.action:set("run")
-    -- player.velocity:set(-300, player.velocity.y)
+    player.velocity.x = -360
   elseif statemanager:is_keydown(KeyEvent.d) then
-    player.reflection:set(Reflection.none)
-    player.action:set("run")
-
-    -- player.velocity:set(300, player.velocity.y)
-  else
-    player.action:set("idle")
-    -- player.velocity:set(0, player.velocity.y)
+    player.reflection:unset()
+    player.velocity.x = 360
   end
+
+  player.action:set(player.velocity.x ~= 0 and "run" or "idle")
 
   if statemanager:is_keydown(KeyEvent.space) then
     if not key_states[KeyEvent.space] then
