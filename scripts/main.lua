@@ -204,12 +204,13 @@ function loop()
   end
 
   if statemanager:is_keydown(KeyEvent.a) then
-    -- player.orientation:set(Flip.horizontal)
+    player.reflection:set(Reflection.horizontal)
     player.action:set("run")
     -- player.velocity:set(-300, player.velocity.y)
   elseif statemanager:is_keydown(KeyEvent.d) then
-    -- player.orientation:set(Flip.none)
+    player.reflection:set(Reflection.none)
     player.action:set("run")
+
     -- player.velocity:set(300, player.velocity.y)
   else
     player.action:set("idle")
