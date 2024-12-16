@@ -36,7 +36,7 @@ local function fire()
 
     bullet.placement:set(x, y + offset_y)
     bullet.action:set("default")
-    bullet:move(800, 0)
+    bullet.velocity.x = 800
 
     local sound = "bomb" .. math.random(1, 2)
     soundmanager:play(sound)
