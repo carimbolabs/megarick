@@ -148,15 +148,15 @@ function setup()
   octopus.placement:set(1200, 622)
   octopus.action:set("idle")
   octopus:on_mail(function(self, message)
-    print("on mail " .. message)
     local behavior = behaviors[message]
     if behavior then
       behavior(self)
     end
   end)
   octopus.kv:subscribe("life", function(value)
+    print("Life " .. value)
+
     if value <= 0 then
-      print("Life " .. value)
       gameover()
     end
   end)
