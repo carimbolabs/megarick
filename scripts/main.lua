@@ -16,7 +16,6 @@ local candle2
 local octopus
 local princess
 local player
-local floor
 
 local vitality
 
@@ -126,10 +125,11 @@ function setup()
           overlay:destroy(vitality)
           vitality = nil
 
+          scenemanager:set("gameover")
+
           collectgarbage("collect")
 
           resourcemanager:flush()
-          scenemanager:set("gameover")
         end)
         timer = true
       end
@@ -143,9 +143,6 @@ function setup()
   player = entitymanager:spawn("player")
   player.action:set("idle")
   player.placement:set(30, 794)
-
-  floor = entitymanager:spawn("floor")
-  floor.placement:set(-16192, 923)
 
   for _ = 1, 3 do
     local bullet = entitymanager:spawn("bullet")
