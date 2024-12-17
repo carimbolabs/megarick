@@ -26,83 +26,18 @@ local explosion_pool = {}
 
 local timer = false
 
-local function fire()
-  if #bullet_pool > 0 then
-    local bullet = table.remove(bullet_pool)
-    local x = (player.x + player.size.width) + 100
-    local y = player.y + 10
-    local offset_y = (math.random(-2, 2)) * 30
-
-    bullet.placement:set(x, y + offset_y)
-    bullet.action:set("default")
-    bullet.velocity.x = 800
-
-    local sound = "bomb" .. math.random(1, 2)
-    soundmanager:play(sound)
-  end
-end
-
-local function boom()
-  if #explosion_pool > 0 then
-    local explosion = table.remove(explosion_pool)
-    local x = octopus.x
-    local y = player.y
-    local offset_x = (math.random(-2, 2)) * 30
-    local offset_y = (math.random(-2, 2)) * 30
-
-    explosion.placement:set(x + offset_x, y + offset_y)
-    explosion.action:set("default")
-  end
-end
-
-local function gameover()
-  octopus.action:set("dead")
-  if not timer then
-    timemanager:singleshot(3000, function()
-      local function destroy(pool)
-        for i = #pool, 1, -1 do
-          entitymanager:destroy(pool[i])
-          table.remove(pool, i)
-          pool[i] = nil
-        end
-      end
-
-      destroy(bullet_pool)
-      destroy(explosion_pool)
-
-      entitymanager:destroy(octopus)
-      octopus = nil
-
-      entitymanager:destroy(player)
-      player = nil
-
-      entitymanager:destroy(princess)
-      princess = nil
-
-      entitymanager:destroy(candle1)
-      candle1 = nil
-
-      entitymanager:destroy(candle2)
-      candle2 = nil
-
-      entitymanager:destroy(floor)
-      floor = nil
-
-      overlay:destroy(vitality)
-      vitality = nil
-
-      collectgarbage("collect")
-
-      resourcemanager:flush()
-      scenemanager:set("gameover")
-    end)
-    timer = true
-  end
-end
-
 local behaviors = {
   hit = function(self)
-    boom()
+    if #explosion_pool > 0 then
+      local explosion = table.remove(explosion_pool)
+      local x = octopus.x
+      local y = player.y
+      local offset_x = (math.random(-2, 2)) * 30
+      local offset_y = (math.random(-2, 2)) * 30
+
+      explosion.placement:set(x + offset_x, y + offset_y)
+      explosion.action:set("default")
+    end
 
     self.action:set("attack")
     self.kv:set("life", self.kv:get("life") - 1)
@@ -156,7 +91,48 @@ function setup()
     vitality:set(string.format("%2d", math.max(value, 0)))
 
     if value <= 0 then
-      gameover()
+      octopus.action:set("dead")
+      if not timer then
+        timemanager:singleshot(3000, function()
+          local function destroy(pool)
+            for i = #pool, 1, -1 do
+              entitymanager:destroy(pool[i])
+              table.remove(pool, i)
+              pool[i] = nil
+            end
+          end
+
+          destroy(bullet_pool)
+          destroy(explosion_pool)
+
+          entitymanager:destroy(octopus)
+          octopus = nil
+
+          entitymanager:destroy(player)
+          player = nil
+
+          entitymanager:destroy(princess)
+          princess = nil
+
+          entitymanager:destroy(candle1)
+          candle1 = nil
+
+          entitymanager:destroy(candle2)
+          candle2 = nil
+
+          entitymanager:destroy(floor)
+          floor = nil
+
+          overlay:destroy(vitality)
+          vitality = nil
+
+          collectgarbage("collect")
+
+          resourcemanager:flush()
+          scenemanager:set("gameover")
+        end)
+        timer = true
+      end
     end
   end)
 
@@ -220,7 +196,20 @@ function loop()
   if statemanager:is_keydown(KeyEvent.space) then
     if not key_states[KeyEvent.space] then
       key_states[KeyEvent.space] = true
-      fire()
+
+      if #bullet_pool > 0 then
+        local bullet = table.remove(bullet_pool)
+        local x = (player.x + player.size.width) + 100
+        local y = player.y + 10
+        local offset_y = (math.random(-2, 2)) * 30
+
+        bullet.placement:set(x, y + offset_y)
+        bullet.action:set("default")
+        bullet.velocity.x = 800
+
+        local sound = "bomb" .. math.random(1, 2)
+        soundmanager:play(sound)
+      end
 
       io:rpc("send", { ["message"] = "hello world from client" }, function(result)
         print(JSON.stringify(result))
