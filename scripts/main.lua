@@ -1,4 +1,4 @@
----@diagnostic disable: undefined-global, lowercase-global
+---@diagnostic disable: undefined-global, undefined-field, lowercase-global
 
 local postalservice
 local timemanager
@@ -106,10 +106,7 @@ local behaviors = {
     boom()
 
     self.action:set("attack")
-    self.kv.life = self.kv.life - 1
-    if self.kv.life <= 0 then
-      gameover()
-    end
+    self.kv:set("life", self.kv:get("life") - 1)
   end
 }
 
@@ -133,10 +130,10 @@ function setup()
   soundmanager = engine:soundmanager()
   statemanager = engine:statemanager()
 
-  emoji = fontfactory:get("emoji")
+  fixedsys = fontfactory:get("fixedsys")
   vitality = overlay:create(WidgetType.label)
-  vitality.font = emoji
-  vitality:set("ooooo", 1300, 660)
+  vitality.font = fixedsys
+  vitality:set("Rodrigo Delduca", 1300, 660)
 
   candle1 = entitymanager:spawn("candle")
   candle1.placement:set(60, 100)
@@ -147,7 +144,7 @@ function setup()
   candle2.action:set("default")
 
   octopus = entitymanager:spawn("octopus")
-  octopus.kv.life = 16
+  octopus.kv:set("life", 16)
   octopus.placement:set(1200, 622)
   octopus.action:set("idle")
   octopus:on_mail(function(self, message)
@@ -155,6 +152,12 @@ function setup()
     local behavior = behaviors[message]
     if behavior then
       behavior(self)
+    end
+  end)
+  octopus.kv:subscribe("life", function(value)
+    if value <= 0 then
+      print("Life " .. value)
+      gameover()
     end
   end)
 
