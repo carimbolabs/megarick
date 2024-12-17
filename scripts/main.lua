@@ -132,7 +132,7 @@ function setup()
   fixedsys = fontfactory:get("fixedsys")
   vitality = overlay:create(WidgetType.label)
   vitality.font = fixedsys
-  vitality:set("16", 1350, 660)
+  vitality:set("16", 1374, 660)
 
   candle1 = entitymanager:spawn("candle")
   candle1.placement:set(60, 100)
@@ -153,7 +153,7 @@ function setup()
     end
   end)
   octopus.kv:subscribe("life", function(value)
-    vitality:set(string.format("%2d", math.max(value, 0)), 1350, 660)
+    vitality:set(string.format("%2d", math.max(value, 0)))
 
     if value <= 0 then
       gameover()
