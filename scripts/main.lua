@@ -18,7 +18,6 @@ local princess
 local player
 local floor
 
-local font
 local vitality
 
 local key_states = {}
@@ -133,7 +132,7 @@ function setup()
   fixedsys = fontfactory:get("fixedsys")
   vitality = overlay:create(WidgetType.label)
   vitality.font = fixedsys
-  vitality:set("Rodrigo Delduca", 1300, 660)
+  vitality:set("16", 1350, 660)
 
   candle1 = entitymanager:spawn("candle")
   candle1.placement:set(60, 100)
@@ -154,7 +153,7 @@ function setup()
     end
   end)
   octopus.kv:subscribe("life", function(value)
-    print("Life " .. value)
+    vitality:set(string.format("%2d", math.max(value, 0)), 1350, 660)
 
     if value <= 0 then
       gameover()
