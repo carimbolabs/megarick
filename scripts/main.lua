@@ -63,9 +63,8 @@ function setup()
   soundmanager = engine:soundmanager()
   statemanager = engine:statemanager()
 
-  playful = fontfactory:get("playful")
   vitality = overlay:create(WidgetType.label)
-  vitality.font = playful
+  vitality.font = fontfactory:get("playful")
   vitality:set("16+", 1350, 620)
 
   candle1 = entitymanager:spawn("candle")
