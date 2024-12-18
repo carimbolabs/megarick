@@ -66,7 +66,7 @@ function setup()
   playful = fontfactory:get("playful")
   vitality = overlay:create(WidgetType.label)
   vitality.font = playful
-  vitality:set("16|", 1320, 640)
+  vitality:set("16+", 1350, 620)
 
   candle1 = entitymanager:spawn("candle")
   candle1.placement:set(60, 100)
@@ -87,7 +87,7 @@ function setup()
     end
   end)
   octopus.kv:subscribe("life", function(value)
-    vitality:set(string.format("%02d|", math.max(value, 0)))
+    vitality:set(string.format("%02d-", math.max(value, 0)))
 
     if value <= 0 then
       octopus.action:set("dead")
