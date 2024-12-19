@@ -179,10 +179,10 @@ function loop()
 
   player.velocity.x = 0
 
-  if statemanager:is_keydown(KeyEvent.a) then
+  if statemanager:is_keydown(KeyEvent.left) then
     player.reflection:set(Reflection.horizontal)
     player.velocity.x = -360
-  elseif statemanager:is_keydown(KeyEvent.d) then
+  elseif statemanager:is_keydown(KeyEvent.right) then
     player.reflection:unset()
     player.velocity.x = 360
   end
