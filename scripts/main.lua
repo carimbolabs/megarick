@@ -180,9 +180,11 @@ function loop()
   player.velocity.x = 0
 
   if statemanager:is_keydown(KeyEvent.left) then
+    print("L")
     player.reflection:set(Reflection.horizontal)
     player.velocity.x = -360
   elseif statemanager:is_keydown(KeyEvent.right) then
+    print("R")
     player.reflection:unset()
     player.velocity.x = 360
   end
