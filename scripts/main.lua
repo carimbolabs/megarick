@@ -22,6 +22,7 @@ local vitality
 local key_states = {}
 local bullet_pool = {}
 local explosion_pool = {}
+local jet_pool = {}
 
 local timer = false
 
@@ -36,6 +37,15 @@ local behaviors = {
 
       explosion.placement:set(x + offset_x, y + offset_y)
       explosion.action:set("default")
+
+      timemanager:singleshot(math.random(100, 600), function()
+        if #jet_pool > 0 then
+          local jet = table.remove(jet_pool)
+          jet.placement:set(980, 812)
+          jet.action:set("default")
+          jet.velocity.x = -200 * math.random(3, 6)
+        end
+      end)
     end
 
     self.action:set("attack")
@@ -103,6 +113,7 @@ function setup()
 
           destroy(bullet_pool)
           destroy(explosion_pool)
+          destroy(jet_pool)
 
           entitymanager:destroy(octopus)
           octopus = nil
@@ -134,6 +145,9 @@ function setup()
         timer = true
       end
     end
+  end)
+  octopus:on_animationfinished(function(self)
+    self.action:set("idle")
   end)
 
   princess = entitymanager:spawn("princess")
@@ -170,6 +184,19 @@ function setup()
     table.insert(explosion_pool, explosion)
   end
 
+  for _ = 1, 9 do
+    local jet = entitymanager:spawn("jet")
+    jet.placement:set(3000, 3000)
+    jet:on_update(function(self)
+      if self.x <= -300 then
+        self.action:unset()
+        self.placement:set(3000, 3000)
+        table.insert(jet_pool, self)
+      end
+    end)
+    table.insert(jet_pool, jet)
+  end
+
   scenemanager:set("ship")
 end
 
@@ -195,6 +222,10 @@ function loop()
   if statemanager:is_keydown(KeyEvent.space) then
     if not key_states[KeyEvent.space] then
       key_states[KeyEvent.space] = true
+
+      if octopus.kv:get("life") <= 0 then
+        return
+      end
 
       if #bullet_pool > 0 then
         local bullet = table.remove(bullet_pool)

@@ -42,7 +42,8 @@
 						"width": 94,
 						"height": 75
 					},
-					"duration": 120
+					"duration": 120,
+					"singleshoot": true
 				}
 			]
 		},
