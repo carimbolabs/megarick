@@ -26,22 +26,29 @@ local jet_pool = {}
 
 local timer = false
 
+math.randomseed(os.time())
+
 local behaviors = {
   hit = function(self)
     if #explosion_pool > 0 then
       local explosion = table.remove(explosion_pool)
-      local x = octopus.x
-      local y = player.y
       local offset_x = (math.random(-2, 2)) * 30
       local offset_y = (math.random(-2, 2)) * 30
 
-      explosion.placement:set(x + offset_x, y + offset_y)
+      explosion.placement:set(octopus.x + offset_x, player.y + offset_y)
       explosion.action:set("default")
 
-      timemanager:singleshot(math.random(100, 600), function()
+      timemanager:singleshot(math.random(100, 400), function()
         if #jet_pool > 0 then
           local jet = table.remove(jet_pool)
-          jet.placement:set(980, 812)
+          local x = 980
+          local base = 812
+          local range = 100
+          local step = 20
+
+          local y = base + step * math.random(-range // step, range // step)
+
+          jet.placement:set(x, y)
           jet.action:set("default")
           jet.velocity.x = -200 * math.random(3, 6)
         end
@@ -208,11 +215,9 @@ function loop()
   player.velocity.x = 0
 
   if statemanager:is_keydown(KeyEvent.left) then
-    print("L")
     player.reflection:set(Reflection.horizontal)
     player.velocity.x = -360
   elseif statemanager:is_keydown(KeyEvent.right) then
-    print("R")
     player.reflection:unset()
     player.velocity.x = 360
   end
