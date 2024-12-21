@@ -88,7 +88,7 @@ function setup()
 
   online = overlay:create(WidgetType.label)
   online.font = fontfactory:get("fixedsys")
-  online:set("Online 0", 1600, 15)
+  online:set("", 1600, 15)
 
   candle1 = entitymanager:spawn("candle")
   candle1.placement:set(60, 100)
