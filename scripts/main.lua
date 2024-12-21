@@ -18,6 +18,7 @@ local princess
 local player
 
 local vitality
+local online
 
 local key_states = {}
 local bullet_pool = {}
@@ -85,6 +86,10 @@ function setup()
   vitality.font = fontfactory:get("playful")
   vitality:set("16+", 1350, 620)
 
+  online = overlay:create(WidgetType.label)
+  online.font = fontfactory:get("fixedsys")
+  online:set("Online 0", 1600, 15)
+
   candle1 = entitymanager:spawn("candle")
   candle1.placement:set(60, 100)
   candle1.action:set("default")
@@ -142,6 +147,9 @@ function setup()
 
           overlay:destroy(vitality)
           vitality = nil
+
+          overlay:destroy(online)
+          online = nil
 
           scenemanager:set("gameover")
 
@@ -203,6 +211,10 @@ function setup()
     end)
     table.insert(jet_pool, jet)
   end
+
+  io:on("online", function(data)
+    online:set("Online " .. data.clients)
+  end)
 
   scenemanager:set("ship")
 end
